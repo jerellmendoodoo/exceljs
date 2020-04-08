@@ -1,4 +1,4 @@
-const testXformHelper = require('./../test-xform-helper');
+const testXformHelper = require('../test-xform-helper');
 
 const DataValidationsXform = verquire(
   'xlsx/xform/sheet/data-validations-xform'
@@ -118,6 +118,39 @@ const expectations = [
     `,
     parsedModel: {
       A1: {
+        type: 'whole',
+        operator: 'between',
+        allowBlank: true,
+        showInputMessage: false,
+        formulae: [5, 10],
+      },
+    },
+    tests: ['parse'],
+  },
+  {
+    title: 'parse using dataValidationUid',
+    create: () => new DataValidationsXform(),
+    xml: `
+      <dataValidations count="1">
+        <dataValidation type="whole" allowBlank="true" showInputMessage="false" sqref="A1" xr:uid="{ABC-123}">
+          <formula1>5</formula1>
+          <formula2>10</formula2>
+        </dataValidation>
+        <dataValidation type="whole" allowBlank="true" showInputMessage="false" sqref="B1" xr:uid="{DEF-456}">
+          <formula1>5</formula1>
+          <formula2>10</formula2>
+        </dataValidation>
+      </dataValidations>
+    `,
+    parsedModel: {
+      A1: {
+        type: 'whole',
+        operator: 'between',
+        allowBlank: true,
+        showInputMessage: false,
+        formulae: [5, 10],
+      },
+      B1: {
         type: 'whole',
         operator: 'between',
         allowBlank: true,
